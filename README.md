@@ -1,6 +1,6 @@
 # BPM Detector
 
-A compact Windows desktop app that detects the tempo (BPM) of audio files and shows the detected beat grid.
+A compact desktop app that detects the tempo (BPM) of audio files and shows the detected beat grid.
 
 ## Build
 
