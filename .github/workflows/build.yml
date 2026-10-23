@@ -50,14 +50,12 @@ jobs:
           -p:PublishSingleFile=true
           -o out/${{ matrix.rid }}
 
-      - name: Package
-        shell: pwsh
-        run: Compress-Archive -Path out/${{ matrix.rid }}/* -DestinationPath out/bpm-detector-${{ matrix.rid }}.zip
-
+      # No manual zip here: upload-artifact already wraps the folder in a zip when downloaded,
+      # so zipping first produced a zip inside a zip.
       - uses: actions/upload-artifact@v4
         with:
           name: bpm-detector-${{ matrix.rid }}
-          path: out/bpm-detector-${{ matrix.rid }}.zip
+          path: out/${{ matrix.rid }}/
           if-no-files-found: error
 
   release:
@@ -69,10 +67,18 @@ jobs:
       contents: write
 
     steps:
+      # Each artifact lands in its own folder: out/bpm-detector-<rid>/...
       - uses: actions/download-artifact@v4
         with:
-          merge-multiple: true
           path: out
+
+      - name: Package
+        shell: bash
+        run: |
+          cd out
+          for d in */; do
+            zip -r -j "${d%/}.zip" "$d"
+          done
 
       - name: Create release
         uses: softprops/action-gh-release@v2
