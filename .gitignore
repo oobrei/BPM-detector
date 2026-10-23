@@ -1,0 +1,10 @@
+bin/
+obj/
+.nuget/
+.localappdata/
+dist/
+dist-folder/
+.tmp/
+.vs/
+*.user
+startup-error.log

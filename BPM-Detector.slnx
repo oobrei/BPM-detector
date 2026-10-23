@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Bpm.App/Bpm.App.csproj" />
+    <Project Path="src/Bpm.Audio/Bpm.Audio.csproj" />
+    <Project Path="src/Bpm.Cli/Bpm.Cli.csproj" />
+    <Project Path="src/Bpm.Core/Bpm.Core.csproj" />
+  </Folder>
+</Solution>

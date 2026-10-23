@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Bpm.Cli</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bpm.Core\Bpm.Core.csproj" />
+    <ProjectReference Include="..\Bpm.Audio\Bpm.Audio.csproj" />
+  </ItemGroup>
+
+</Project>

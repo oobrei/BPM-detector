@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Bpm.App</RootNamespace>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <ApplicationIcon Condition="Exists('app.ico')">app.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <!-- Standalone publish settings. Inert for normal builds: they only apply when the build is
+       asked for a self-contained publish (dotnet publish with self-contained true). -->
+  <PropertyGroup Condition="'$(SelfContained)' == 'true' and '$(SingleFilePublish)' != 'false'">
+    <PublishSingleFile>true</PublishSingleFile>
+    <!-- Keep the native libraries loose next to the exe instead of embedding them. Embedded ones
+         must be extracted into %TEMP%\.net at startup, and on a machine where that is denied the
+         process dies before any window appears. Loose natives cost a few files and always work. -->
+    <IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.22" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.22" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.22" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.22" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.22" Condition="'$(Configuration)' == 'Debug'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bpm.Core\Bpm.Core.csproj" />
+    <ProjectReference Include="..\Bpm.Audio\Bpm.Audio.csproj" />
+  </ItemGroup>
+
+</Project>

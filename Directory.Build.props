@@ -1,0 +1,16 @@
+<Project>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <!-- Keep every restored package inside the workspace: the sandbox blocks NuGet's
+         network/TLS path, so builds must resolve from this cache offline. -->
+    <RestorePackagesPath>$(MSBuildThisFileDirectory).nuget\packages\</RestorePackagesPath>
+    <NuGetAudit>false</NuGetAudit>
+  </PropertyGroup>
+
+</Project>

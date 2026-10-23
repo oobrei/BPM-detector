@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Bpm.Core</RootNamespace>
+    <!-- Wires the BeatTrackerMultiFeature + RhythmExtractor2013 ensemble.
+         The two global ODFs (beat_emphasis, infogain) are not ported yet, so the ensemble
+         currently runs the three spectral ODFs; see FIDELITY.md. -->
+    <DefineConstants>$(DefineConstants);BPM_PIPELINE_WIRED</DefineConstants>
+  </PropertyGroup>
+
+</Project>
