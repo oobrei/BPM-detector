@@ -1,0 +1,56 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            rid: win-x86
+          - os: windows-latest
+            rid: win-x64
+          - os: windows-latest
+            rid: win-arm64
+          - os: macos-latest
+            rid: osx-arm64
+          - os: ubuntu-latest
+            rid: linux-x64
+          - os: ubuntu-latest
+            rid: linux-x86
+          - os: ubuntu-latest
+            rid: linux-arm64
+
+    runs-on: ${{ matrix.os }}
+    name: publish ${{ matrix.rid }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Publish
+        run: >
+          dotnet publish src/Bpm.App/Bpm.App.csproj
+          -c Release
+          -r ${{ matrix.rid }}
+          --self-contained true
+          -p:PublishSingleFile=true
+          -o out/${{ matrix.rid }}
+
+      - name: Package
+        shell: pwsh
+        run: Compress-Archive -Path out/${{ matrix.rid }}/* -DestinationPath out/bpm-detector-${{ matrix.rid }}.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bpm-detector-${{ matrix.rid }}
+          path: out/bpm-detector-${{ matrix.rid }}.zip
+          if-no-files-found: error
