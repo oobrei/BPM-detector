@@ -3,7 +3,11 @@ name: build
 on:
   push:
     branches: [ main ]
+    tags: [ 'v*' ]
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   publish:
@@ -55,3 +59,24 @@ jobs:
           name: bpm-detector-${{ matrix.rid }}
           path: out/bpm-detector-${{ matrix.rid }}.zip
           if-no-files-found: error
+
+  release:
+    name: create release
+    needs: publish
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          path: out
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: BPM Detector ${{ github.ref_name }}
+          files: out/*.zip
+          generate_release_notes: true
