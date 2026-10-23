@@ -21,8 +21,9 @@ jobs:
             rid: osx-arm64
           - os: ubuntu-latest
             rid: linux-x64
-          - os: ubuntu-latest
-            rid: linux-x86
+          # linux-x86 is not buildable: .NET 10 ships no linux-x86 apphost (NETSDK1084) and
+          # Avalonia/SkiaSharp have no 32-bit Linux native assets, so a produced binary could not
+          # render a window.
           - os: ubuntu-latest
             rid: linux-arm64
 
