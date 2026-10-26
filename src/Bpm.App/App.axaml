@@ -5,6 +5,37 @@
 
   <Application.Styles>
     <FluentTheme />
+
+    <!-- A flyout popup is its own visual root, so these cannot live in Window.Styles. -->
+    <Style Selector="MenuFlyoutPresenter">
+      <Setter Property="Background" Value="#161B22"/>
+      <Setter Property="BorderBrush" Value="#30363D"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Padding" Value="4"/>
+      <Setter Property="FontFamily" Value="Inter, Segoe UI"/>
+      <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <Style Selector="MenuItem">
+      <Setter Property="FontFamily" Value="Inter, Segoe UI"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Foreground" Value="#D7DEE7"/>
+      <Setter Property="Padding" Value="9,3"/>
+      <Setter Property="MinHeight" Value="26"/>
+    </Style>
+
+    <Style Selector="MenuItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#232B34"/>
+    </Style>
+
+    <Style Selector="MenuItem:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#1C3A5E"/>
+    </Style>
+
+    <Style Selector="MenuItem Separator">
+      <Setter Property="Background" Value="#30363D"/>
+      <Setter Property="Margin" Value="4,3"/>
+    </Style>
   </Application.Styles>
 
 </Application>
