@@ -150,7 +150,7 @@
           <controls:OnsetGraphControl Height="140" Curve="{Binding SelectedOdf}"
                                       Ticks="{Binding SelectedTicks}"
                                       FrameRate="{Binding SelectedFrameRate}"/>
-          <TextBlock Text="selected file · orange marks = detected beats" Classes="label"
+          <TextBlock Text="orange = beats · Ctrl+wheel zoom · drag to move" Classes="label"
                      FontSize="9.5" Margin="0,3,0,0"/>
         </StackPanel>
       </Border>
