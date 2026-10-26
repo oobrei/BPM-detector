@@ -7,13 +7,13 @@ using Avalonia.Threading;
 namespace Bpm.App.Controls;
 
 /// <summary>
-/// TuneLab-style scope: a dark panel with a faint grid, the onset energy trace of the selected
+/// Scope panel: a dark panel with a faint grid, the onset energy trace of the selected
 /// file, and vertical markers at the detected beat positions. Data comes straight from the
 /// analysis result, so the graph is exactly what the algorithm saw.
 /// </summary>
 /// <remarks>
-/// Ctrl + mouse wheel zooms around the pointer; left-drag pans. Following the technique TuneLab
-/// uses for its piano roll: the wheel only sets a TARGET view, and a frame-rate independent
+/// Ctrl + mouse wheel zooms around the pointer; left-drag pans. The wheel only sets a TARGET view,
+/// and a frame-rate independent
 /// exponential ease (k = 1 - exp(-dt / tau)) walks the view toward it, snapping once it is within
 /// a hair of the target. That makes a fast flick of the wheel feel like one continuous glide
 /// instead of a series of jumps. Dragging stays 1:1 with the pointer, since any easing there would
@@ -21,7 +21,7 @@ namespace Bpm.App.Controls;
 /// </remarks>
 public sealed class OnsetGraphControl : Control
 {
-    /// <summary>Ease time constant in ms, matching the value TuneLab uses for wheel scrolling.</summary>
+    /// <summary>Ease time constant in ms for wheel-driven zooming.</summary>
     private const double SmoothTauMs = 60;
 
     private const double MinSpanSeconds = 0.5;
