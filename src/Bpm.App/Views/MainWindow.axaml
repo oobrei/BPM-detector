@@ -61,13 +61,20 @@
     <Border DockPanel.Dock="Top" Background="#161B22" Padding="8,5"
             BorderBrush="#30363D" BorderThickness="0,0,0,1">
       <StackPanel Orientation="Horizontal" Spacing="6">
+        <Button Name="FileMenuButton" Content="File ▾">
+          <Button.Flyout>
+            <MenuFlyout Placement="BottomEdgeAlignedLeft">
+              <MenuItem Header="Add Files…" Click="OnAddFiles"/>
+              <MenuItem Header="Add Folder…" Click="OnAddFolder"/>
+              <Separator/>
+              <MenuItem Header="Export CSV…" Click="OnExport"/>
+            </MenuFlyout>
+          </Button.Flyout>
+        </Button>
         <Button Classes="primary" Name="RescanButton" Content="Rescan BPM" Click="OnRescan"/>
-        <Button Name="AddFilesButton" Content="Add Files…" Click="OnAddFiles"/>
-        <Button Name="AddFolderButton" Content="Add Folder…" Click="OnAddFolder"/>
         <Button Name="RescanPendingButton" Content="Scan Unanalyzed" Click="OnRescanPending"/>
         <Button Name="RemoveButton" Content="Remove" Click="OnRemove"/>
         <Button Name="ClearButton" Content="Clear" Click="OnClear"/>
-        <Button Name="ExportButton" Content="Export CSV…" Click="OnExport"/>
         <Button Name="CancelButton" Content="Cancel" Click="OnCancel"/>
         <CheckBox Name="AutoScanCheck" Content="Auto-scan" IsChecked="{Binding AutoScan}"
                   FontSize="11" VerticalAlignment="Center" Margin="8,0,0,0"/>
