@@ -18,12 +18,22 @@ public sealed class AudioFileItem : INotifyPropertyChanged
     private double? _confidence;
     private double? _duration;
 
-    public AudioFileItem(string path)
+    public AudioFileItem(string path, int id)
     {
         Path = path;
+        Id = id;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
+
+    /// <summary>
+    /// Stable identity for this queue entry. Rows are addressed by id — never by file name or
+    /// path — so two entries for the same file, and a row whose file was replaced on disk, are
+    /// always unambiguous.
+    /// </summary>
+    public int Id { get; }
+
+    public string IdDisplay => $"#{Id}";
 
     public string Path { get; }
 
@@ -158,6 +168,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     }
 
     private bool _autoScan = true;
+    private int _nextId = 1;
 
     /// <summary>When true (default), queued files are analyzed without pressing Rescan.</summary>
     public bool AutoScan
@@ -255,7 +266,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         {
             if (File.Exists(path) && FfmpegAudioDecoder.HasSupportedExtension(path))
             {
-                Files.Add(new AudioFileItem(path));
+                Files.Add(new AudioFileItem(path, _nextId++));
                 added++;
             }
         }
@@ -302,6 +313,19 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 
     /// <summary>Stops analysis of one file; the rest of the queue keeps going.</summary>
     public void CancelItem(AudioFileItem item) => item.Cancellation?.Cancel();
+
+    /// <summary>Looks a row up by mission id; null when that id is no longer queued.</summary>
+    public AudioFileItem? FindById(int id) => Files.FirstOrDefault(f => f.Id == id);
+
+    public void RemoveById(int id)
+    {
+        if (FindById(id) is { } item)
+        {
+            Remove([item]);
+        }
+    }
+
+    public void CancelById(int id) => FindById(id)?.Cancellation?.Cancel();
 
     public async Task AnalyzeAllAsync(bool onlyPending = true)
     {
