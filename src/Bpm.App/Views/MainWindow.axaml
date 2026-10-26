@@ -71,8 +71,6 @@
         <Button Name="CancelButton" Content="Cancel" Click="OnCancel"/>
         <CheckBox Name="AutoScanCheck" Content="Auto-scan" IsChecked="{Binding AutoScan}"
                   FontSize="11" VerticalAlignment="Center" Margin="8,0,0,0"/>
-        <TextBlock Text="{Binding FfmpegStatus}" VerticalAlignment="Center" Margin="8,0,0,0"
-                   Classes="hint" FontSize="10" TextTrimming="CharacterEllipsis"/>
       </StackPanel>
     </Border>
 

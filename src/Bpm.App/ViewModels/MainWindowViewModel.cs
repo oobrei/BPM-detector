@@ -115,12 +115,12 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         try
         {
             _decoder = new FfmpegAudioDecoder();
-            FfmpegStatus = $"ffmpeg: {_decoder.FfmpegPath}";
         }
-        catch (Exception ex)
+        catch (Exception)
         {
+            // The window shows a dialog for this; the decoder is unusable until ffmpeg exists.
             _decoder = null!;
-            FfmpegStatus = ex.Message;
+            IsFfmpegMissing = true;
         }
 
         // Debounced auto-scan: adding a batch of files arms it once, so a multi-file drop does not
@@ -133,7 +133,8 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 
     public ObservableCollection<AudioFileItem> Files { get; } = [];
 
-    public string FfmpegStatus { get; }
+    /// <summary>True when no ffmpeg could be located, so decoding is impossible.</summary>
+    public bool IsFfmpegMissing { get; }
 
     public string Status
     {

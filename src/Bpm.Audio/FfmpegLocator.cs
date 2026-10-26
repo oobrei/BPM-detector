@@ -4,12 +4,14 @@ namespace Bpm.Audio;
 
 /// <summary>
 /// Finds an ffmpeg/ffprobe pair. Lookup order: explicit path, BPM_FFMPEG environment
-/// variable, a copy shipped next to the executable (ffmpeg\ffmpeg.exe or ffmpeg.exe),
-/// then PATH.
+/// variable, a copy shipped next to the executable, then PATH. The binary name follows the
+/// platform: <c>ffmpeg.exe</c> on Windows, bare <c>ffmpeg</c> on Linux and macOS.
 /// </summary>
 public static class FfmpegLocator
 {
-    private const string ExeName = "ffmpeg.exe";
+    private static readonly string ExeName = OperatingSystem.IsWindows() ? "ffmpeg.exe" : "ffmpeg";
+
+    private static readonly string ProbeName = OperatingSystem.IsWindows() ? "ffprobe.exe" : "ffprobe";
 
     public static string? FindFfmpeg(string? explicitPath = null)
     {
@@ -33,13 +35,13 @@ public static class FfmpegLocator
             return null;
         }
 
-        var probe = Path.Combine(dir, "ffprobe.exe");
+        var probe = Path.Combine(dir, ProbeName);
         if (File.Exists(probe))
         {
             return probe;
         }
 
-        return FindOnPath("ffprobe.exe");
+        return FindOnPath(ProbeName);
     }
 
     private static IEnumerable<string?> Candidates(string? explicitPath, string? envPath)

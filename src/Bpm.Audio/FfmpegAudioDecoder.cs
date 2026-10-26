@@ -35,7 +35,7 @@ public sealed class FfmpegAudioDecoder
     {
         _ffmpeg = FfmpegLocator.FindFfmpeg(ffmpegPath)
                   ?? throw new AudioDecodeException(
-                      "ffmpeg was not found. Install it, put ffmpeg.exe beside the app (or in an 'ffmpeg' " +
+                      "ffmpeg was not found. Install it, put it beside the app (or in an 'ffmpeg' " +
                       "subfolder), or set the BPM_FFMPEG environment variable.");
         _ffprobe = FfmpegLocator.FindFfprobe(_ffmpeg);
         PreferTempFile = preferTempFile;
