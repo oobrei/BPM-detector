@@ -248,11 +248,12 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 
     public void AddFiles(IEnumerable<string> paths)
     {
-        var known = Files.Select(f => f.Path).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        // Duplicates are allowed on purpose: queueing the same file twice is a legitimate way to
+        // compare runs, and each row tracks its own result and cancellation.
         var added = 0;
         foreach (var path in paths)
         {
-            if (File.Exists(path) && FfmpegAudioDecoder.HasSupportedExtension(path) && known.Add(path))
+            if (File.Exists(path) && FfmpegAudioDecoder.HasSupportedExtension(path))
             {
                 Files.Add(new AudioFileItem(path));
                 added++;
