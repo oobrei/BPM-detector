@@ -86,6 +86,9 @@ public sealed class AudioFileItem : INotifyPropertyChanged
     /// <summary>Full analysis result, kept for the selection panel (onset curve, beat grid).</summary>
     public BpmResult? Result { get; internal set; }
 
+    /// <summary>Set while this file is being analyzed, so the row can cancel just this file.</summary>
+    public CancellationTokenSource? Cancellation { get; internal set; }
+
     private bool Set<T>(ref T field, T value, [CallerMemberName] string? name = null)
     {
         if (EqualityComparer<T>.Default.Equals(field, value))
@@ -296,6 +299,9 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 
     public void Cancel() => _cancellation?.Cancel();
 
+    /// <summary>Stops analysis of one file; the rest of the queue keeps going.</summary>
+    public void CancelItem(AudioFileItem item) => item.Cancellation?.Cancel();
+
     public async Task AnalyzeAllAsync(bool onlyPending = true)
     {
         if (IsBusy || _decoder is null)
@@ -329,9 +335,14 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
                 Status = $"Analyzing {item.FileName} ({i + 1}/{targets.Count})";
                 item.Status = "Decoding";
 
+                // Linked so the global stop still wins, while the row's own X cancels only this file.
+                using var itemCancellation = CancellationTokenSource.CreateLinkedTokenSource(token);
+                item.Cancellation = itemCancellation;
+
+
                 try
                 {
-                    var result = await Task.Run(() => AnalyzeOne(item, token), token);
+                    var result = await Task.Run(() => AnalyzeOne(item, itemCancellation.Token), itemCancellation.Token);
                     item.Result = result;
                     item.Bpm = result.Bpm;
                     item.Confidence = result.Confidence;
@@ -344,8 +355,15 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
                 catch (OperationCanceledException)
                 {
                     item.Status = "Cancelled";
-                    Status = "Cancelled";
-                    break;
+
+                    // A cancelled row is skipped; a cancelled queue stops.
+                    if (token.IsCancellationRequested)
+                    {
+                        Status = "Cancelled";
+                        break;
+                    }
+
+                    Status = $"{item.FileName}: cancelled";
                 }
                 catch (Exception ex)
                 {
@@ -353,6 +371,10 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
                     item.Confidence = null;
                     item.Bpm = null;
                     Status = $"{item.FileName}: {ex.Message}";
+                }
+                finally
+                {
+                    item.Cancellation = null;
                 }
 
                 Progress = (double)(i + 1) / targets.Count;

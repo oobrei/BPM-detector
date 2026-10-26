@@ -93,6 +93,22 @@ public partial class MainWindow : Window
         Vm.Remove(selected);
     }
 
+    private void OnRemoveRow(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (Vm is not null && (sender as Button)?.DataContext is AudioFileItem item)
+        {
+            Vm.Remove([item]);
+        }
+    }
+
+    private void OnCancelRow(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (Vm is not null && (sender as Button)?.DataContext is AudioFileItem item)
+        {
+            Vm.CancelItem(item);
+        }
+    }
+
     private void OnClear(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => Vm?.Clear();
 
     private void OnCancel(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => Vm?.Cancel();

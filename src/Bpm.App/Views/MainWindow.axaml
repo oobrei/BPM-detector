@@ -54,6 +54,27 @@
     <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
       <Setter Property="Background" Value="#1C3A5E"/>
     </Style>
+
+    <!-- Row actions: invisible until the row is hovered, but always laid out so the row
+         does not shift when they appear. -->
+    <Style Selector="Button.rowAction">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="CornerRadius" Value="4"/>
+      <Setter Property="Padding" Value="3"/>
+      <Setter Property="Width" Value="21"/>
+      <Setter Property="Height" Value="21"/>
+      <Setter Property="MinHeight" Value="0"/>
+      <Setter Property="Opacity" Value="0"/>
+      <Setter Property="IsHitTestVisible" Value="False"/>
+    </Style>
+    <Style Selector="ListBoxItem:pointerover Button.rowAction">
+      <Setter Property="Opacity" Value="1"/>
+      <Setter Property="IsHitTestVisible" Value="True"/>
+    </Style>
+    <Style Selector="Button.rowAction:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="#2A323C"/>
+    </Style>
   </Window.Styles>
 
   <DockPanel>
@@ -68,14 +89,13 @@
               <MenuItem Header="Add Folder…" Click="OnAddFolder"/>
               <Separator/>
               <MenuItem Header="Export CSV…" Click="OnExport"/>
+              <Separator/>
+              <MenuItem Header="Clear List" Click="OnClear"/>
             </MenuFlyout>
           </Button.Flyout>
         </Button>
         <Button Classes="primary" Name="RescanButton" Content="Rescan BPM" Click="OnRescan"/>
         <Button Name="RescanPendingButton" Content="Scan Unanalyzed" Click="OnRescanPending"/>
-        <Button Name="RemoveButton" Content="Remove" Click="OnRemove"/>
-        <Button Name="ClearButton" Content="Clear" Click="OnClear"/>
-        <Button Name="CancelButton" Content="Cancel" Click="OnCancel"/>
         <CheckBox Name="AutoScanCheck" Content="Auto-scan" IsChecked="{Binding AutoScan}"
                   FontSize="11" VerticalAlignment="Center" Margin="8,0,0,0"/>
       </StackPanel>
@@ -94,7 +114,7 @@
     <Grid ColumnDefinitions="*,300" Margin="8" ColumnSpacing="8">
 
       <Grid RowDefinitions="Auto,Auto,*" RowSpacing="4">
-        <Grid ColumnDefinitions="2.4*,0.7*,0.8*,0.9*" Margin="8,0,8,0">
+        <Grid ColumnDefinitions="2.4*,0.7*,0.8*,0.9*,47" Margin="8,0,8,0">
           <TextBlock Text="FILE" Classes="label"/>
           <TextBlock Grid.Column="1" Text="LENGTH" Classes="label"/>
           <TextBlock Grid.Column="2" Text="BPM" Classes="label"/>
@@ -105,7 +125,7 @@
           <ListBox Name="FileList" SelectionMode="Multiple" ItemsSource="{Binding Files}">
             <ListBox.ItemTemplate>
               <DataTemplate>
-                <Grid ColumnDefinitions="2.4*,0.7*,0.8*,0.9*">
+                <Grid ColumnDefinitions="2.4*,0.7*,0.8*,0.9*,47">
                   <StackPanel>
                     <TextBlock Text="{Binding FileName}" FontSize="12" Foreground="#E6EDF3"
                                TextTrimming="CharacterEllipsis"/>
@@ -120,6 +140,25 @@
                   <TextBlock Grid.Column="3" Text="{Binding Status}" FontSize="11"
                              VerticalAlignment="Center" Foreground="#8B949E"
                              TextTrimming="CharacterEllipsis"/>
+
+                  <!-- Lucide icons (shadcn/ui's icon set), 24x24 geometry at 2px stroke. -->
+                  <StackPanel Grid.Column="4" Orientation="Horizontal" Spacing="1"
+                              VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <Button Classes="rowAction" Click="OnRemoveRow" ToolTip.Tip="Remove from list">
+                      <Viewbox Width="13" Height="13">
+                        <Path Stroke="#8B949E" StrokeThickness="2" StrokeLineCap="Round"
+                              StrokeJoin="Round"
+                              Data="M10 11 L10 17 M14 11 L14 17 M19 6 L19 20 A2 2 0 0 1 17 22 L7 22 A2 2 0 0 1 5 20 L5 6 M3 6 L21 6 M8 6 L8 4 A2 2 0 0 1 10 2 L14 2 A2 2 0 0 1 16 4 L16 6"/>
+                      </Viewbox>
+                    </Button>
+                    <Button Classes="rowAction" Click="OnCancelRow" ToolTip.Tip="Cancel this file">
+                      <Viewbox Width="13" Height="13">
+                        <Path Stroke="#8B949E" StrokeThickness="2" StrokeLineCap="Round"
+                              StrokeJoin="Round"
+                              Data="M18 6 L6 18 M6 6 L18 18"/>
+                      </Viewbox>
+                    </Button>
+                  </StackPanel>
                 </Grid>
               </DataTemplate>
             </ListBox.ItemTemplate>
