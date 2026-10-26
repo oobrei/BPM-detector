@@ -148,6 +148,16 @@
                   <!-- Lucide icons (shadcn/ui's icon set), 24x24 geometry at 2px stroke. -->
                   <StackPanel Grid.Column="4" Orientation="Horizontal" Spacing="1"
                               VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <Button Classes="rowAction" Click="OnCancelRow" Tag="{Binding Id}"
+                            ToolTip.Tip="Cancel this file">
+                      <Viewbox Width="12" Height="12" Stretch="Uniform">
+                        <Canvas Width="24" Height="24">
+                          <Path Stroke="#8B949E" StrokeThickness="2" StrokeLineCap="Round"
+                                StrokeJoin="Round"
+                                Data="M18 6 L6 18 M6 6 L18 18"/>
+                        </Canvas>
+                      </Viewbox>
+                    </Button>
                     <Button Classes="rowAction" Click="OnRemoveRow" Tag="{Binding Id}"
                             ToolTip.Tip="Remove from list">
                       <Viewbox Width="12" Height="12" Stretch="Uniform">
@@ -157,16 +167,6 @@
                           <Path Stroke="#8B949E" StrokeThickness="2" StrokeLineCap="Round"
                                 StrokeJoin="Round"
                                 Data="M10 11 L10 17 M14 11 L14 17 M19 6 L19 20 A2 2 0 0 1 17 22 L7 22 A2 2 0 0 1 5 20 L5 6 M3 6 L21 6 M8 6 L8 4 A2 2 0 0 1 10 2 L14 2 A2 2 0 0 1 16 4 L16 6"/>
-                        </Canvas>
-                      </Viewbox>
-                    </Button>
-                    <Button Classes="rowAction" Click="OnCancelRow" Tag="{Binding Id}"
-                            ToolTip.Tip="Cancel this file">
-                      <Viewbox Width="12" Height="12" Stretch="Uniform">
-                        <Canvas Width="24" Height="24">
-                          <Path Stroke="#8B949E" StrokeThickness="2" StrokeLineCap="Round"
-                                StrokeJoin="Round"
-                                Data="M18 6 L6 18 M6 6 L18 18"/>
                         </Canvas>
                       </Viewbox>
                     </Button>
