@@ -1,8 +1,9 @@
 name: build
 
 on:
+  # Builds only run for version tags: a commit to main is cheap to make and does not need six
+  # platform builds. Manual runs stay available from the Actions tab.
   push:
-    branches: [ main ]
     tags: [ 'v*' ]
   workflow_dispatch:
 
